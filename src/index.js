@@ -1,7 +1,7 @@
 require("dotenv").config();
 const debug = require("debug")("social-api:root");
 const chalk = require("chalk");
-const connectDB = require("../../202204-W7CH1-bernat-arcusa-boris-randebrock/db");
+const connectDB = require("../db");
 const startServer = require("./server/startServer");
 
 const port = process.env.API_PORT || 5000;
