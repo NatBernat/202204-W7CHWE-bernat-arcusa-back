@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll=false",
-    "coverage": "jest --watchAll=false --coverage",
+    "test-coverage": "jest --watchAll=false --coverage",
     "start": "node src/index",
-    "start-nodemon": "nodemon index -q",
+    "start-nodemon": "nodemon src/index -q",
     "prepare": "husky install"
   },
   "keywords": [],
