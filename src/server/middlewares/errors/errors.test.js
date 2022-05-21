@@ -45,7 +45,7 @@ describe("Given a generalError function", () => {
 
       generalError(error, null, res);
 
-      expect(res.json).toHaveBeenCalledWith(expectedResponseMessage);
+      expect(res.json).toHaveBeenCalledWith({ msg: expectedResponseMessage });
     });
   });
 });
