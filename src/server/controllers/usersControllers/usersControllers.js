@@ -3,10 +3,10 @@ const debug = require("debug")("social-api:server:users");
 const chalk = require("chalk");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-const User = require("../../../../db/model/User");
+const User = require("../../../db/model/User");
 
 const userLogin = async (req, res, next) => {
-  const { username, password } = await req.body;
+  const { username, password } = req.body;
   const user = await User.findOne({ username });
 
   if (!user) {
@@ -34,7 +34,7 @@ const userLogin = async (req, res, next) => {
 };
 
 const userRegister = async (req, res, next) => {
-  const { username, password, name } = await req.body;
+  const { username, password, name } = req.body;
   const user = await User.findOne({ username });
 
   if (user) {
@@ -54,7 +54,7 @@ const userRegister = async (req, res, next) => {
       name,
     });
 
-    res.status(201).json("User succesfully created");
+    res.status(201).json(`User ${username} succesfully created`);
   } catch (error) {
     error.statusCode = 400;
     error.customMessage = "Cannot create user";

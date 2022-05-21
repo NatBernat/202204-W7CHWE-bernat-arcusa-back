@@ -1,7 +1,8 @@
 require("dotenv").config();
 const debug = require("debug")("social-api:root");
 const chalk = require("chalk");
-const connectDB = require("../db");
+const connectDB = require("./db");
+
 const startServer = require("./server/startServer");
 
 const port = process.env.API_PORT || 5000;
