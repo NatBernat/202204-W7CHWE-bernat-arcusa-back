@@ -8,13 +8,12 @@ jest.mock("../../../db/model/User", () => ({
 jest.mock("bcrypt", () => ({
   compare: jest.fn().mockResolvedValue(true),
 }));
-
 jest.mock("jsonwebtoken", () => ({
   sign: () => token,
 }));
 
 describe("Given a loginUser function", () => {
-  describe("When invoked with a request object with a correct username and password and a response", () => {
+  describe("When receives a request object with a correct username and password and a response", () => {
     const req = {
       body: {
         username: "usernameTest",
