@@ -10,7 +10,7 @@ const generalError = (error, req, res, next) => {
   const statusCode = error.statusCode ?? 500;
   const errorMessage = error.customMessage ?? "General error";
   debug(chalk.red(errorMessage));
-  res.status(statusCode).json(errorMessage);
+  res.status(statusCode).json({ msg: errorMessage });
 };
 
 module.exports = { notFoundError, generalError };

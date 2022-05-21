@@ -3,10 +3,10 @@ const debug = require("debug")("social-api:server:users");
 const chalk = require("chalk");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-const User = require("../../../../db/model/User");
+const User = require("../../../db/model/User");
 
 const userLogin = async (req, res, next) => {
-  const { username, password } = await req.body;
+  const { username, password } = req.body;
   const user = await User.findOne({ username });
 
   if (!user) {
@@ -34,31 +34,31 @@ const userLogin = async (req, res, next) => {
 };
 
 const userRegister = async (req, res, next) => {
-  const { username, password, name } = await req.body;
-  const user = await User.findOne({ username });
-
-  if (user) {
-    const error = new Error("Username not available");
-    error.statuscode = 409;
-    error.customMessage = "Username not available";
-
-    next(error);
-  }
-
-  const encryptedPassword = await bcrypt.hash(password, 10);
-
   try {
-    await User.create({
+    const { username, password, name } = req.body;
+
+    const user = await User.findOne({ username });
+
+    if (user) {
+      throw new Error("Username already exists");
+    }
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({
       username,
       password: encryptedPassword,
       name,
     });
 
-    res.status(201).json("User succesfully created");
+    res.status(201).json(newUser);
   } catch (error) {
-    error.statusCode = 400;
-    error.customMessage = "Cannot create user";
-
+    if (error.message === "Username already exists") {
+      error.statusCode = 409;
+      error.customMessage = "Username already exists";
+    } else {
+      error.statusCode = 400;
+      error.customMessage = "Bad request";
+    }
     next(error);
   }
 };
