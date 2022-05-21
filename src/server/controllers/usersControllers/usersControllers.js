@@ -8,7 +8,6 @@ const User = require("../../../../db/model/User");
 const userLogin = async (req, res, next) => {
   const { username, password } = await req.body;
   const user = await User.findOne({ username });
-  debug(chalk.blue(user.username));
 
   if (!user) {
     debug(chalk.red("Username is wrong"));
@@ -34,6 +33,34 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-const userRegister = (req, res, next) => {};
+const userRegister = async (req, res, next) => {
+  const { username, password, name } = await req.body;
+  const user = await User.findOne({ username });
+
+  if (user) {
+    const error = new Error("Username not available");
+    error.statuscode = 409;
+    error.customMessage = "Username not available";
+
+    next(error);
+  }
+
+  const encryptedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await User.create({
+      username,
+      password: encryptedPassword,
+      name,
+    });
+
+    res.status(201).json("User succesfully created");
+  } catch (error) {
+    error.statusCode = 400;
+    error.customMessage = "Cannot create user";
+
+    next(error);
+  }
+};
 
 module.exports = { userLogin, userRegister };
