@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, SchemaTypes } = require("mongoose");
 
 const UserSchema = new Schema({
   username: {
@@ -18,6 +18,20 @@ const UserSchema = new Schema({
   image: {
     type: String,
   },
+  friends: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
+  enemies: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
 });
 
 const User = model("User", UserSchema, "users");
