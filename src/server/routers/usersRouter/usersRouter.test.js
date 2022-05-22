@@ -50,7 +50,6 @@ describe("Given a POST /users/register/ endpoint ", () => {
         password: "testUser",
         name: "Test User",
       };
-      /* await request(app).post("/users/register").send(mockNewUser); */
       await User.create(existingNewUser);
 
       await request(app)
