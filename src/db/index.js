@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
+const { mongoose } = require("mongoose");
 const debug = require("debug")("social-api:db:root");
 const chalk = require("chalk");
 
@@ -8,7 +8,7 @@ const connectDB = async (connectionsString) =>
     mongoose.connect(connectionsString, (error) => {
       if (error) {
         debug(chalk.red("DataBase error"));
-        reject();
+        reject(error);
         return;
       }
       debug(chalk.green("Connected to DataBase"));
